@@ -1,0 +1,105 @@
+package edu.pages;
+
+import edu.utils.BaseAction;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
+
+public class MoviePage {
+	private AndroidDriver<AndroidElement> driver;
+	BaseAction action;
+
+	public MoviePage(AndroidDriver<AndroidElement> driver) {
+		this.driver = driver;
+		this.action = new BaseAction(driver);
+	}
+
+	private AndroidElement btn_movie() {
+		return driver.findElementById("tab_spec_movie");
+	}
+
+	private AndroidElement btn_search() {
+		return driver.findElementById("img_search");
+	}
+
+	private AndroidElement btn_one_history() {
+		return driver.findElementByLinkText("小时代");
+	}
+
+	private AndroidElement btn_delete_history() {
+		return driver.findElementById("img_del");
+	}
+
+	private AndroidElement search_text() {
+		return driver.findElementById("search_src_text");
+	}
+
+	private AndroidElement btn_classical() {
+		return driver.findElementById("btn_classical");
+	}
+
+	private AndroidElement one_movie() {
+		return driver.findElementById("tv_show_movie_name");
+	}
+
+	private AndroidElement ll_head_theme() {
+		return driver.findElementById("ll_head_theme");
+	}
+
+	// 搜索-小时代
+	public void searchXiaoshidai1() {
+		action.click(btn_movie());
+
+		action.click(btn_search());
+		action.type(search_text(), "小时代");
+	}
+
+	// 搜索-"xiaoshidai"
+	public void searchXiaoshidai2() {
+		action.click(btn_movie());
+
+		action.click(btn_search());
+		action.type(search_text(), "xiaoshidai");
+	}
+
+	// 搜索-输入“东京”
+	public void searchPlace() {
+		action.click(btn_movie());
+
+		action.click(btn_search());
+		action.type(search_text(), "东京");
+	}
+
+	// 搜索-历史记录
+	public void searchHistory() {
+		action.click(btn_movie());
+
+		action.click(btn_search());
+		action.click(btn_one_history());
+	}
+
+	// 搜索-删除历史记录
+	public void searchDeleteHistory() {
+		action.click(btn_movie());
+
+		action.click(btn_search());
+		action.click(btn_delete_history());
+	}
+
+	// 筛选-经典
+	public void jingdian() {
+		action.click(btn_movie());
+		action.click(btn_classical());
+	}
+
+	// 选择一部电影
+	public void chooseOneMovie() {
+		action.click(btn_movie());
+		action.click(one_movie());
+	}
+
+	// 点击电影界面的专题
+	public void theme() {
+		action.click(btn_movie());
+		action.click(ll_head_theme());
+	}
+}
