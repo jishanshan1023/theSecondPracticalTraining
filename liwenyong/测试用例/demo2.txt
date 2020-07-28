@@ -1,0 +1,115 @@
+
+package com.second.demo;
+
+import static org.testng.Assert.assertTrue;
+
+import org.testng.annotations.Test;
+
+public class Demo02 extends Demo01{
+	@Test(description="点击影行的合同信息")
+	public void test11(){
+		test01();
+		//点击合同，展示所有影行合同
+		webtest.enterFrame("iframe-1");
+		webtest.click("link=合同");
+		assertTrue(webtest.isTextPresent("合同信息"));
+	}
+	@Test(description="用户同意合同")
+	public void test12(){
+		test11();
+		//点击同意
+		webtest.click("xpath=//a[@href='/yingxing/www/crm/index.php?m=contract&f=delivery&contractID=1']");
+		webtest.click("xpath=//input[@name='finish']");
+		//选择到期时间
+		webtest.type("name=deliveredDate", "2020-12-10");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+		
+	}
+	@Test(description="编辑合同名称")
+	public void test13(){
+
+		test11();
+		//点击编辑的合同编号
+		webtest.click("xpath=//td[@title='112603']");
+		//点击编辑
+		webtest.click("xpath=//a[@href='/yingxing/www/crm/index.php?m=contract&f=edit&contractID=3']");
+		webtest.type("name=name", "用户需遵守");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));		
+	}
+	@Test(description="查看所有客户信息")
+	public void test14(){
+		test01();
+		//点击客户
+		webtest.enterFrame("iframe-1");
+		webtest.click("link=客户");
+		assertTrue(webtest.isTextPresent("添加客户"));		
+	}
+	@Test(description="添加客户信息")
+	public void test15(){
+		
+		webtest.click("link=添加客户");
+		webtest.type("name=name", "黄三");
+		webtest.click("xpath=//select[@name='source']");
+		webtest.click("xpath=//option[@value='activity']");
+		webtest.type("name=sourceNote", "集体活动");
+		webtest.type("name=contact", "测试十");
+		webtest.type("name=phone", "10086110");
+		webtest.click("xpath=//select[@name='type']");
+		webtest.click("xpath=//option[@value='national']");
+		webtest.type("name=address[title]", "河北师范大学");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+	}
+	@Test(description="全选客户信息指派特定人")
+	public void test16(){
+		test14();
+		//全选
+		webtest.click("xpath=//a[@id='allchecker']");
+		//指派人
+		webtest.click("xpath=//div[@id='assignedTO_chosen']");
+		webtest.click("xpath=//span[@title='王']");
+		webtest.click("xpath=//a[contains(.,'指派')]");
+		assertTrue(webtest.isTextPresent("退出"));		
+	}
+	@Test(description="查看电影列表")
+	public void test17(){
+		test01();
+		webtest.enterFrame("iframe-1");
+		webtest.click("link=电影");
+		assertTrue(webtest.isTextPresent("维护类目"));
+	}
+	@Test(description="添加类目信息")
+	public void test18(){
+		
+		webtest.click("link=添加类目");
+		webtest.type("name=name", "儿童剧场");
+		webtest.type("name=contact", "测试十二");
+		webtest.type("name=phone", "10086112");
+		webtest.type("name=qq", "20191129");
+		webtest.type("weixin", "292028");
+		webtest.click("xpath=//select[@name='type']");
+		webtest.click("xpath=//option[@value='limited']");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+	}
+	@Test(description="查看类目信息")
+	public void test19(){
+		test01();
+		webtest.enterFrame("iframe-1");
+		webtest.click("link=类目");
+		assertTrue(webtest.isTextPresent("维护分类"));
+	}
+	@Test(description="影行创建分类")
+	public void test20(){
+		
+		webtest.click("维护分类");
+		webtest.type("name=children[11]", "短视频类");
+		webtest.type("name=children[12]", "娱乐类");
+		webtest.click("xpath=//button[@type=submit]");
+		assertTrue(webtest.isTextPresent("保存成功"));
+	}
+		
+}
+

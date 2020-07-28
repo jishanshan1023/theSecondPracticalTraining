@@ -1,0 +1,114 @@
+package com.second.demo;
+
+import static org.testng.Assert.assertTrue;
+
+import org.testng.annotations.Test;
+
+public class Demo03 extends Login{
+	@Test(description="进入VIP用户首页")
+	public void test21(){
+		LoginSuccess();//登陆成功
+		webtest.enterFrame("iframe-2");
+		webtest.click("link=首页");
+		assertTrue(webtest.isTextPresent("VIP会员"));
+	}
+	@Test(description="推荐VIP影视")
+	public void test22(){
+		test21();
+		//点击VIP会员
+		webtest.click("link=VIP会员");
+		assertTrue(webtest.isTextPresent("专属推荐"));
+	}
+	@Test(description="热播影视")
+	public void test23(){
+		test21();
+		//点击热播
+		webtest.click("link=热播");
+		//点击更多
+		webtest.click("xpath=//a[@href='/yingxing/www/oa/index.php?m=overtime&f=review&id=1&status=pass']");
+		webtest.alertAccept();//弹出框确定
+		assertTrue(!webtest.isTextPresent("1"));
+	}
+	@Test(description="添加电影公告")
+	public void test24() throws InterruptedException {
+		test21();
+		//点击公告
+		webtest.click("xpath=//a[@href='/yingxing/www/oa/index.php?m=announce&f=browse/']");
+		webtest.click("xpath=//div[@id='menuActions']");
+		Thread.sleep(3000);
+		webtest.type("name=children[1]","上映时间");
+		webtest.type("name=children[2]","电影简介");
+		webtest.type("name=children[3]", "演员信息");
+		webtest.type("name=children[4]","导演信息");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+	}
+	@Test(description="已有公告后添加影视公告")
+	public void test25() throws InterruptedException{
+		test21();
+		webtest.click("link=公告");
+		webtest.click("link=添加公告");
+		Thread.sleep(3000);
+		webtest.click("xpath=//ul[@class='chosen-choices']");
+		webtest.click("xpath=//li[@data-option-array-index='0']");
+		webtest.type("name=title", "影视上映");
+		webtest.enterFrame("ke-edit-iframe");
+		webtest.click("tag=body");
+		webtest.type("tag=body", "元旦上映");
+		webtest.leaveFrame();
+	    webtest.click("xpath=//button[@type='submit']");
+	    assertTrue(webtest.isTextPresent("保存成功"));
+	}
+	@Test(description="上映时间")
+	public void test26(){
+		test21();
+		webtest.click("xpath=//a[@href='/yingxing/www/oa/index.php?m=leave&f=personal']");
+		webtest.click("xpath=//a[@href='/yingxing/www/oa/index.php?m=leave&f=create']");
+		webtest.click("xpath=//input[@value='annual']");
+		webtest.type("name=begin", "2020-01-01");
+		webtest.type("name=start","09:00");
+		webtest.type("name=end","2020-10-07");
+		
+		webtest.type("name=desc","元旦至国庆");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+	}
+	@Test(description="查看我的所有下载")
+	public void test27(){
+		test21();
+		webtest.click("link=我的");
+		webtest.click("我的下载");
+		assertTrue(webtest.isTextPresent("本地视频"));	
+	}
+	@Test(description="对我的下载删除")
+	public void test28(){
+		test27();
+		webtest.click("xpath=//input[@value='4']");
+		webtest.click("xpath=//input[@value='3']");
+		webtest.click("xpath=//input[@value='2']");
+		webtest.click("link=批量删除");
+		assertTrue(!webtest.isTextPresent("4"));		
+	}
+	@Test(description="对删除人进行设置")
+	public void test29(){
+		test21();
+		webtest.click("link=管理人");
+		webtest.click("link=设置");
+		webtest.click("xpath=//option[@value='zhang']");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+	}
+	@Test(description="添加管理人信息")
+	public void test30(){
+		test21();
+		webtest.click("link=管理");
+		webtest.click("link=申请添加");
+		webtest.type("name=admin","李四");
+		webtest.click("xpath=//ul[@class='chosen-choices']");
+		webtest.click("xpath=//li[@data-option-array-index='1']");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+			
+	}
+}
+

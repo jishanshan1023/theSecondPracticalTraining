@@ -1,0 +1,112 @@
+package com.second.demo;
+
+import static org.testng.Assert.assertTrue;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import com.webtest.dataprovider.ExcelDataProvider;
+
+public class Demo05 extends Login{
+	@Test(description="进入热点影视首页")
+	public void test31() throws InterruptedException{
+		LoginSuccess();
+		webtest.mouseoverElement("xpath=//*[@id='s-menu-3']/button");
+	    webtest.click("xpath=//*[@id='s-menu-3']/button");
+	    // 点击设置
+	    Thread.sleep(3000);
+	    webtest.enterFrame("iframe-3");
+		assertTrue(webtest.isTextPresent("添加喜欢"));	
+	}
+	@Test(description="添加喜欢区块")
+	public void test32() throws InterruptedException{
+		test31();
+		webtest.click("link=添加区块");
+		webtest.click("xpath=//select[@name='blocks']");
+		//选择任务区块
+		webtest.click("xpath=//option[@value='task']");
+		Thread.sleep(1000);
+		webtest.type("name=title", "任务列表栏");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));	
+	}
+	
+	@Test(description="进入现金记账首页")
+	public void test33() throws InterruptedException{
+		LoginSuccess();
+		webtest.mouseoverElement("xpath=//*[@id='s-menu-5']/button");
+	    webtest.click("xpath=//*[@id='s-menu-5']/button");
+	    // 点击设置
+	    Thread.sleep(2000);
+	    webtest.enterFrame("iframe-5");
+		assertTrue(webtest.isTextPresent("添加区块"));			
+	}
+	@Test(description="添加账号")
+	public void test33() throws InterruptedException{
+		test33();
+		webtest.click("link=账户");
+		webtest.click("link=添加账号");
+		Thread.sleep(1000);
+		webtest.type("name=abbr", "添加新账号");
+		webtest.type("name=tags", "账号");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));	
+	}
+	
+	@Test(description="进入账号信息")
+	public void test35() throws InterruptedException{
+		LoginSuccess();
+		webtest.mouseoverElement("xpath=//*[@id='s-menu-6']/button");
+	    webtest.click("xpath=//*[@id='s-menu-6']/button");
+	    // 点击设置
+	    Thread.sleep(3000);
+	    webtest.enterFrame("iframe-6");
+		assertTrue(webtest.isTextPresent("添加账号"));	
+		
+	}
+	@Test(description="添加喜欢区块信息")
+	public void test36() throws InterruptedException{
+		test35();
+		 //添加区块
+	    webtest.click("link=添加区块");
+	    webtest.click("xpath=//select[@name=blocks]");
+	    webtest.click("xpath=//option[@value='blog']");
+	    Thread.sleep(1000);
+	    webtest.type("name=title", "喜剧");
+	    webtest.typeAndClear("name=params[num]", "10");
+	    webtest.click("xpath=//button[@type='submit']");
+	    assertTrue(webtest.isTextPresent("保存成功"));				
+	}
+	@Test(description="设置浏览类目")
+	public void test37() throws InterruptedException{
+		test35();
+		webtest.click("link=设置");
+		webtest.click("link=浏览类目");
+		//编辑类目
+		webtest.click("xpath=//a[@href='/yingxing/www/team/index.php?m=tree&f=edit&category=28']");
+		Thread.sleep(1000);
+		webtest.typeAndClear("value=短视频","小品");
+		webtest.click("xpath=//input[@id='rights5']");
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+		
+	}
+	@DataProvider(name="excel")
+	public Object[][] words1() throws Exception{
+		ExcelDataProvider d = new ExcelDataProvider();
+		return d.getTestDataByExcel("data//shixun1.xlsx","Sheet1");
+	}
+
+	@Test(dataProvider="excel",description="添加子类目")
+	public void test38(String href,String name1,String value1,String name2,String value2,String name3,String value3) throws InterruptedException{
+		test35();
+		webtest.click("link=设置");
+		webtest.click("link=家庭生活");
+		webtest.click(href);
+		webtest.type(name1,value1);
+		webtest.type(name2,value2 );
+		webtest.type(name3,value3);
+		webtest.click("xpath=//button[@type='submit']");
+		assertTrue(webtest.isTextPresent("保存成功"));
+	}
+}
